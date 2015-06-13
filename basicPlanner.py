@@ -19,6 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
 # MA 02110-1301, USA.
 #
+# Authors: Alexey Evdokimov
+# Authors: Bianca Gonzalez Navas
+# Authors: Carolina Bello
 # Authors: Ariel Vernaza DSAPANDORA (ariel.vernaza at dsalab.com)
 
 import roslib
@@ -78,11 +81,12 @@ class qbo_random_move():
         self.angular_speed=0.0
         self.turn_time=0.1
         self.wall_distance_limit=0.3
+        self.floor_distance_limit=0.2
         self.last_turn_direction=False #True means left
         self.bad_word_said=False
         self.uniform_lineal_speed_change=0.05
         #self.talking=False
-        self.sentences=['Ups','A can not pass though a wall','I will brake this wall. Can anyone put a cannon on me?','Atom, can you help me with this wall?', 'Oh my God. I am gonna crash', 'I shall not pass']
+        self.sentences=['No!','Otro camino','Mi nivel de poder es muy bajo','Nesesito mas poder', 'Noo', 'No puedo pasar']
         rospy.Subscriber("/qbo_face_tracking/face_pos_and_size", FacePosAndDist, face_callback)
 
 
@@ -103,6 +107,7 @@ class qbo_random_move():
             now=rospy.Time.now()
             warning_left_flag=False
             warning_right_flag=False
+            warning_floor_flag=False
             if frontal_distances[0][1] and (now-frontal_distances[0][1])<rospy.Duration(0.5):
                 warning_left_flag=True
             if frontal_distances[1][1] and (now-frontal_distances[1][1])<rospy.Duration(0.5):
@@ -115,6 +120,7 @@ class qbo_random_move():
                 left_distance=frontal_distances[0][0]
             if warning_right_flag:
                 right_distance=frontal_distances[1][0]
+               
 
             #print frontal_distances
 
